@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as Location from 'expo-location';
+import WeatherInfo from './Components/WeatherInfo';
 
 const  WEATHER_API_KEY ='a5d943ebd115e365117562df62a57f98';
 
@@ -11,6 +12,7 @@ export default function App() {
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [currentWeather, setCurrentWeather] = useState(null);
+  const [unitsSystem, setUnitsSystem] = useState('metric');
 
   useEffect(() => {
     load()
@@ -26,7 +28,7 @@ async function load(){
   }
   const location = await Location.getCurrentPositionAsync();
   const { latitude, longitude } = location.coords;
-  const weatherUrl = `${BASE_WEATHER_URL}lat=${latitude}&lon=${longitude}&appid=${WEATHER_API_KEY}`;
+  const weatherUrl = `${BASE_WEATHER_URL}lat=${latitude}&lon=${longitude}&units=${unitsSystem}&appid=${WEATHER_API_KEY}`;
 
   const response = await fetch(weatherUrl);
 
@@ -51,8 +53,11 @@ if(currentWeather){
 
   return (
     <View style={styles.container}>
-      <Text>{temp}</Text>
-      <StatusBar style="auto" />
+        <StatusBar style="auto" />
+     <View style={styles.main}>
+          <WeatherInfo currentWeather={currentWeather} />
+     </View>
+    
     </View>
   );
 }else{
@@ -69,8 +74,10 @@ if(currentWeather){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
-  },
+},
+main: {
+    justifyContent: 'center',
+    flex: 1,
+},
 });
