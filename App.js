@@ -5,6 +5,8 @@ import * as Location from 'expo-location';
 import WeatherInfo from './Components/WeatherInfo';
 import UnitsPicker from './components/UnitsPicker';
 import { colors } from './utils/index';
+import ReloadIcon from './components/ReloadIcon';
+
 const  WEATHER_API_KEY ='a5d943ebd115e365117562df62a57f98';
 
 const BASE_WEATHER_URL = 'https://api.openweathermap.org/data/2.5/weather?'
@@ -23,7 +25,7 @@ async function load(){
   setCurrentWeather(null);
   setErrorMessage(null);
   try{
-    let { status } = await Location.requestPermissionsAsync()
+    let { status } = await Location.requestForegroundPermissionsAsync();
 
     if (status !== 'granted') {
       setErrorMessage('Access to location is needed to run the app')
@@ -59,7 +61,8 @@ if(currentWeather){
         <StatusBar style="auto" />
      <View style={styles.main}>
        <UnitsPicker unitsSystem={unitsSystem} setUnitsSystem={setUnitsSystem}/>
-          <WeatherInfo currentWeather={currentWeather} />
+       <ReloadIcon load={load} />
+        <WeatherInfo currentWeather={currentWeather} />
      </View>
     
     </View>
@@ -67,10 +70,11 @@ if(currentWeather){
 }else if(errorMessage){
   return (
     <View style={styles.container}>
-      <Text>{errorMessage} </Text>
-      <StatusBar style="auto" />
+        <ReloadIcon load={load} />
+        <Text style={{ textAlign: 'center' }}>{errorMessage}</Text>
+        <StatusBar style="auto" />
     </View>
-  );
+)
 }else{
   return (
     <View style={styles.container}>
