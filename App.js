@@ -6,6 +6,7 @@ import WeatherInfo from './Components/WeatherInfo';
 import UnitsPicker from './components/UnitsPicker';
 import { colors } from './utils/index';
 import ReloadIcon from './components/ReloadIcon';
+import WeatherDetails from './components/WeatherDetails';
 
 const  WEATHER_API_KEY ='a5d943ebd115e365117562df62a57f98';
 
@@ -64,7 +65,7 @@ if(currentWeather){
        <ReloadIcon load={load} />
         <WeatherInfo currentWeather={currentWeather} />
      </View>
-    
+    <WeatherDetails currentWeather={currentWeather} unitsSystem={unitsSystem} />
     </View>
   );
 }else if(errorMessage){
